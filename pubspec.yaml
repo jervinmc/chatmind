@@ -37,6 +37,8 @@ dependencies:
   just_audio: ^0.9.17
   awesome_dialog: ^2.1.1
   carousel_slider: ^4.0.0
+  get: ^4.3.8
+  flutter_chat_bubble: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

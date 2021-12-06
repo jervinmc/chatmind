@@ -45,14 +45,14 @@ void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       if(_selectedIndex==2){
-        Navigator.push(
-                  context,
-                  PageTransition(
-                    curve: Curves.linear,
-                    type: PageTransitionType.topToBottom,
-                    child: ChatPage(),
-                  ),
-                );
+        // Navigator.push(
+        //           context,
+        //           PageTransition(
+        //             curve: Curves.linear,
+        //             type: PageTransitionType.topToBottom,
+        //             child: ChatPage(),
+        //           ),
+        //         );
       }
     });
   }
@@ -63,10 +63,10 @@ void _onItemTapped(int index) {
       backgroundColor:_selectedIndex == 1 ? Color(Global.primary) : Colors.white,
       body: _selectedIndex == 0 ? ListView(
         children: [
-          ContentArticle('1. Tip to manage the mental illness','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit',50,12),
-          ContentArticle('2. When it comes to deal with your own problem.','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sagittis orci a scelerisque purus semper. Habitant morbi tristique senectus et netus. Nam libero justo laoreet sit amet cursus. Ullamcorper malesuada proin libero nunc consequat interdum. A cras semper auctor neque vitae tempus. Dignissim diam quis enim loborti',13,20),
+          ContentArticle('1. The early stages of the pandemic and the ensuing lockdowns were hard on all of us, in different ways. Isolation, joblessness, childcare, and many other challenges severely affected the mental well-being of many people around the world. Yet here we are, a year on. How are we coping?','The physical health effects of COVID-19 and the countless deaths the pandemic has claimed have been, and continue to be, devastating on a global scale.',50,12),
+          ContentArticle('2. Healthy Ways to Cope with Stress.','including those on social media. It’s good to be informed, but hearing about the pandemic constantly can be upsetting. Consider limiting news to just a couple times a day and disconnecting from phone, tv, and computer screens for a while.',13,20),
         ],
-      ) :ListView(),
+      ) : _selectedIndex == 1 ?ListView() : ChatPage(),
       drawer: Drawer(
         
         child: ListView(

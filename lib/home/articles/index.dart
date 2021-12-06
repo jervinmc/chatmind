@@ -80,7 +80,7 @@ class ContentArticle extends StatelessWidget {
                                   PageTransition(
                                     curve: Curves.linear,
                                     type: PageTransitionType.topToBottom,
-                                    child: Details(_tipTitle,'hello','hello'),
+                                    child: Details(_tipTitle,_subtitle,'hello'),
                                   ),
                                 );
                   }, icon: Icon(Icons.reply)),

@@ -1,202 +1,95 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-
+import 'package:flutter_chat_bubble/bubble_type.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_1.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_7.dart';
 
 class ChatPage extends StatefulWidget {
+  const ChatPage({Key key}) : super(key: key);
+
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  TextEditingController _message = new TextEditingController();
-  
-List _chatItems = [];
-
-Future _itemBuilder() async{
- 
-
- return _chatItems;
-}
-
- 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Chatbot"),),
-      backgroundColor: Colors.indigo,
-      body: SafeArea(
-        child: Stack(
+    return Stack(
+      children: [
+        ListView(
           children: [
-            Column(
-              children: [
-                _bodyChat(),
-                SizedBox(
-                  height: 120,
-                )
-              ],
+            getSenderView(
+                ChatBubbleClipper7(type: BubbleType.sendBubble), context),
+            getReceiverView(
+                ChatBubbleClipper7(type: BubbleType.receiverBubble), context),
+            getReceiverView(
+                ChatBubbleClipper7(type: BubbleType.receiverBubble), context),
+            getReceiverView(
+                ChatBubbleClipper7(type: BubbleType.receiverBubble), context),
+            getReceiverView(
+                ChatBubbleClipper7(type: BubbleType.receiverBubble), context),
+            getReceiverView(
+                ChatBubbleClipper7(type: BubbleType.receiverBubble), context),
+            SizedBox(
+              height: 30,
             ),
-            _formChat(),
+            Container(
+              padding: EdgeInsets.only(right: 15 ,left: 15, bottom: 15),
+              child: TextField(
+          decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey, width: 1.5),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xff83c5be), width: 5.0),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              filled: true,
+              hintStyle: TextStyle(color: Colors.grey[800]),
+              hintText: "Enter text here.",
+              fillColor: Colors.white70),
+        ),
+            )
           ],
         ),
-      ),
-    );
-  }
-
-
-  Widget _bodyChat() {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.only(left: 25, right: 25, top: 25),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(0), topRight: Radius.circular(0)),
-          color: Colors.white,
-        ),
-        child: FutureBuilder(
-        future: _itemBuilder(),
-        builder: (context, projectSnap) {
-          if (projectSnap.connectionState == ConnectionState.none &&
-              projectSnap.hasData == null) {
-            //print('project snapshot data is: ${projectSnap.data}');
-            return Container();
-      }
-      return ListView.builder(
-        itemCount: projectSnap.data.length,
-        itemBuilder: (context, index) {
-          print(projectSnap.data);
-                  return _itemChat(
-              avatar: projectSnap.data[index]['avatar'],
-              chat: 0,
-              message:
-                  projectSnap.data[index]['message'],
-              time: '18.00',
-            );
-  }
-      );
-    },
-  )
-      
-      ),
-    );
-  }
-
-  // 0 = Send
-  // 1 = Recieved
-  _itemChat({int chat, String avatar, message, time}) {
-    return Row(
-      mainAxisAlignment:
-          chat == 0 ? MainAxisAlignment.end : MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        avatar != null
-            ? Avatar(
-                image: avatar,
-                size: 50,
-              )
-            : Text(
-                '$time',
-                style: TextStyle(color: Colors.grey.shade400),
-              ),
-        Flexible(
-          child: Container(
-            margin: EdgeInsets.only(left: 10, right: 10, top: 20),
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: chat == 0 ? Colors.indigo.shade100 : Colors.indigo.shade50,
-              borderRadius: chat == 0
-                  ? BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                      bottomLeft: Radius.circular(30),
-                    )
-                  : BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                    ),
-            ),
-            child: Text('$message'),
-          ),
-        ),
-        chat == 1
-            ? Text(
-                '$time',
-                style: TextStyle(color: Colors.grey.shade400),
-              )
-            : SizedBox(),
+     
+        
       ],
     );
   }
 
-  Widget _formChat() {
-    return Positioned(
-      child: Align(
-        alignment: Alignment.bottomCenter,
+  getSenderView(CustomClipper clipper, BuildContext context) => ChatBubble(
+        clipper: clipper,
+        alignment: Alignment.topRight,
+        margin: EdgeInsets.only(top: 20),
+        backGroundColor: Colors.blue,
         child: Container(
-          height: 120,
-          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-          color: Colors.white,
-          child: TextField(
-            controller: _message,
-            decoration: InputDecoration(
-              hintText: 'Type your message...',
-              suffixIcon: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.indigo),
-                padding: EdgeInsets.all(14),
-                child: IconButton(
-              icon:Icon( Icons.send_rounded,
-                  color: Colors.white,
-                  size: 28,),
-                  onPressed: (){
-                    _chatItems.add({"avatar":"assets/images/data.jpg","message":"okayokay"});
-                    _itemBuilder();
-                  },
-                ),
-                
-              ),
-              filled: true,
-              fillColor: Colors.blueGrey[50],
-              labelStyle: TextStyle(fontSize: 12),
-              contentPadding: EdgeInsets.all(20),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blueGrey[50]),
-                borderRadius: BorderRadius.circular(25),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.blueGrey[50]),
-                borderRadius: BorderRadius.circular(25),
-              ),
-            ),
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
+          ),
+          child: Text(
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            style: TextStyle(color: Colors.white),
           ),
         ),
-      ),
-    );
-  }
-}
+      );
 
-class Avatar extends StatelessWidget {
-  final double size;
-  final image;
-  final EdgeInsets margin;
-  Avatar({this.image, this.size = 50, this.margin = const EdgeInsets.all(0)});
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: margin,
-      child: Container(
-        width: size,
-        height: size,
-        decoration: new BoxDecoration(
-          shape: BoxShape.circle,
-          image: new DecorationImage(
-            image: AssetImage(image),
+  getReceiverView(CustomClipper clipper, BuildContext context) => ChatBubble(
+        clipper: clipper,
+        backGroundColor: Color(0xffE7E7ED),
+        margin: EdgeInsets.only(top: 20),
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
+          ),
+          child: Text(
+            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+            style: TextStyle(color: Colors.black),
           ),
         ),
-      ),
-    );
-  }
+      );
 }
